@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "mini-weather-app",
+    "slug": "mini-weather-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
