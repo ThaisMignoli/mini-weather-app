@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar backgroundColor={theme.colors.background} barStyle='light-content'/>
+      <StatusBar backgroundColor={theme.colors.primary} barStyle='light-content'/>
       <SafeAreaProvider>
         <Routes />
       </SafeAreaProvider>
