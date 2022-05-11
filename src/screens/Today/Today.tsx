@@ -7,6 +7,9 @@ import { api } from "../../services/api";
 import { Forecast } from "../../@types/Forecast";
 import { handleError } from "../../utils/handleError";
 
+import ShiftWeather from "../../components/ShiftWeather/ShiftWeather";
+import Condition from "../../components/Condition/Condition";
+
 import { 
   Container, 
   ForecastWrapper, 
@@ -18,6 +21,9 @@ import {
   TemperatureWrapper, 
   Temperature, 
   TodayIcon, 
+  ConditionWrapper, 
+  TodayWeatherWrapper, 
+  UpdatedAt, 
 } from "./styles";
 
 const { API_KEY } = process.env;
@@ -69,6 +75,42 @@ interface LocationInfo {
   const todayMax = weatherData?.today.temp.max.toFixed(0);
   const todayMin = weatherData?.today.temp.min.toFixed(0);
 
+  const mornTemp = {
+    shift: 'morn', 
+    temp: weatherData?.today.temp.morn.toFixed(0), 
+    feelsLike: weatherData?.today.feels_like.morn.toFixed(0)
+  }
+  const dayTemp = {
+    shift: 'day', 
+    temp: weatherData?.today.temp.day.toFixed(0), 
+    feelsLike: weatherData?.today.feels_like.day.toFixed(0)
+  }
+  const eveTemp = {
+    shift: 'eve', 
+    temp: weatherData?.today.temp.eve.toFixed(0), 
+    feelsLike: weatherData?.today.feels_like.eve.toFixed(0)
+  }
+  const nightTemp = {
+    shift: 'night', 
+    temp: weatherData?.today.temp.night.toFixed(0), 
+    feelsLike: weatherData?.today.feels_like.night.toFixed(0)
+  }
+
+  const todayTempArray = [mornTemp, dayTemp, eveTemp, nightTemp];
+
+  const wind = `${(weatherData?.current.wind_speed*3.6).toFixed(2)}km/h`;
+  const humidity = `${weatherData?.current.humidity}%`;
+  const clouds = `${weatherData?.current.clouds}%`;
+  const rain = `${(weatherData?.today.pop*100).toFixed(0)}%`;
+  const currentDate = (new Date(weatherData?.current.dt*1000).toLocaleDateString());
+  const currentTime = (new Date(weatherData?.current.dt*1000).toLocaleTimeString());
+
+  function renderTodayWeather() {
+    return React.Children.toArray(todayTempArray.map(({ shift, temp, feelsLike}) =>  
+      <ShiftWeather shift={shift} weatherCode={weatherCode} temperature={temp} feelsLike={feelsLike}/>
+    ))
+  }
+
   useEffect(() => {
     loadData();
   }, []);
@@ -99,7 +141,20 @@ interface LocationInfo {
               </TemperatureWrapper>
 
               <Title>{todayMax}º/{todayMin}º Feels like {currentFeelsLike}º</Title>
+
+              <ConditionWrapper>
+                <Condition icon="wind" title="Wind" text={wind}/>
+                <Condition icon="droplet" title="Humidity" text={humidity}/>
+                <Condition icon="cloud" title="Clouds" text={clouds}/>
+                <Condition icon="cloud-rain" title="Rain" text={rain}/>
+              </ConditionWrapper>
+
             </CurrentWrapper>
+
+            <TodayWeatherWrapper>
+              {renderTodayWeather()}
+              <UpdatedAt>Updated at {currentDate} {currentTime}</UpdatedAt>
+            </TodayWeatherWrapper>
           </>
         }
       </ForecastWrapper>

@@ -85,3 +85,32 @@ export const TodayIcon = styled.Image`
   width: ${height * 0.12}px;
 `;
 
+export const ConditionWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+
+  margin-top: ${height * 0.04}px;
+`
+
+export const TodayWeatherWrapper = styled.View`
+  flex: 1;
+  align-self: center;
+  
+  width: 90%;
+
+  margin: ${height * 0.03}px 0;
+`;
+
+export const UpdatedAt = styled.Text`
+  align-self: flex-end;
+
+  color: ${({ theme }) => theme.colors.text};
+
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${RFValue(8)}px;
+
+  opacity: 0.7;
+`;
+
